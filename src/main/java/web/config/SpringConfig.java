@@ -4,6 +4,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -12,21 +13,21 @@ import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.spring5.view.ThymeleafViewResolver;
 
 /*
-Этот класс полностью заменяет applicationContext.xml
+Это SPRING config
  */
 
 @Configuration
 @EnableWebMvc // помечаем что наше приложене поддерживает web функции
 @ComponentScan("web") // сканировать будем по пакету web
-public class  WebConfig implements WebMvcConfigurer { // этот интерфейс реализуют тогда, когда хотят настроить спринг под себя
+@Import(DBConfig.class) // добавить
+public class SpringConfig implements WebMvcConfigurer { // этот интерфейс реализуют тогда, когда хотят настроить спринг под себя
     // например, мы будем использовать шаблонизатор Thymeleaf
     private final ApplicationContext applicationContext;
 
     // внедряем зависимость контекста через конструктор, нужна ли пометка @Autowired?
-    public WebConfig(ApplicationContext applicationContext) {
+    public SpringConfig(ApplicationContext applicationContext) {
         this.applicationContext = applicationContext;
     }
-
 
     @Bean // Используем ApplicationContext чтобы настроить таймлиф
     public SpringResourceTemplateResolver templateResolver() {
