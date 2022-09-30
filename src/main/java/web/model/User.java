@@ -2,9 +2,6 @@ package web.model;
 
 import javax.persistence.*;
 
-/*
-Обычный pojo класс
- */
 @Entity
 @Table(name = "users")
 public class User {
@@ -14,15 +11,16 @@ public class User {
 
     @Column
     private String name;
+
     @Column
     private String surname;
+
     @Column
     private int age;
 
     public User(){}
 
     public User(String name, String surname, int age) {
-        //this.id = id;
         this.name = name;
         this.surname = surname;
         this.age = age;

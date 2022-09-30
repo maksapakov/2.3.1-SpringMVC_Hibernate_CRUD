@@ -12,33 +12,29 @@ import org.thymeleaf.spring5.SpringTemplateEngine;
 import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.spring5.view.ThymeleafViewResolver;
 
-/*
-Это SPRING config
- */
 
 @Configuration
-@EnableWebMvc // помечаем что наше приложене поддерживает web функции
-@ComponentScan("web") // сканировать будем по пакету web
-@Import(DBConfig.class) // добавить
-public class SpringConfig implements WebMvcConfigurer { // этот интерфейс реализуют тогда, когда хотят настроить спринг под себя
-    // например, мы будем использовать шаблонизатор Thymeleaf
+@EnableWebMvc
+@ComponentScan("web")
+@Import(DBConfig.class)
+public class SpringConfig implements WebMvcConfigurer {
+
     private final ApplicationContext applicationContext;
 
-    // внедряем зависимость контекста через конструктор, нужна ли пометка @Autowired?
     public SpringConfig(ApplicationContext applicationContext) {
         this.applicationContext = applicationContext;
     }
 
-    @Bean // Используем ApplicationContext чтобы настроить таймлиф
+    @Bean
     public SpringResourceTemplateResolver templateResolver() {
         SpringResourceTemplateResolver templateResolver = new SpringResourceTemplateResolver();
         templateResolver.setApplicationContext(applicationContext);
-        templateResolver.setPrefix("/WEB-INF/pages/"); // задаем папку в которой будут лежать представления
-        templateResolver.setSuffix(".html"); // создаем расширение для представлений
+        templateResolver.setPrefix("/WEB-INF/pages/");
+        templateResolver.setSuffix(".html");
         return templateResolver;
     }
 
-    @Bean // задаем конфигурацию для представлений
+    @Bean
     public SpringTemplateEngine templateEngine() {
         SpringTemplateEngine templateEngine = new SpringTemplateEngine();
         templateEngine.setTemplateResolver(templateResolver());
@@ -46,7 +42,7 @@ public class SpringConfig implements WebMvcConfigurer { // этот интерф
         return templateEngine;
     }
 
-    @Override // создаем шаблонизатор Thymeleaf
+    @Override
     public void configureViewResolvers(ViewResolverRegistry registry) {
         ThymeleafViewResolver resolver = new ThymeleafViewResolver();
         resolver.setTemplateEngine(templateEngine());
