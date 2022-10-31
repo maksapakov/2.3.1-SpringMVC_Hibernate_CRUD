@@ -17,4 +17,5 @@ public class HelloController {
         model.addAttribute("messages", messages);
         return "index";
     }
+
 }
